@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        body {
+            background: black; /* Solid black background */
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        /* Enhanced Bomb-like Fireworks Animation */
+        .fireworks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1; /* Above background, below content */
+        }
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #ff4500, #ffd700, transparent);
+            border-radius: 50%;
+            animation: explode 2s infinite ease-out;
+        }
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+        /* Particles for bigger burst */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: inherit;
+            border-radius: 50%;
+            animation: scatter 2s infinite ease-out;
+        }
+        @keyframes scatter {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(calc(var(--x) * 100px), calc(var(--y) * 100px)) scale(0); opacity: 0; }
+        }
+        
+        .slideshow-container {
+            max-width: 500px;
+            position: relative;
+            margin: 20px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        .slide {
+            display: none;
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        .fade {
+            animation: fade 2s ease-in-out;
+        }
+        @keyframes fade {
+            from { opacity: 0.4; }
+            to { opacity: 1; }
+        }
+        .marquee {
+            font-size: 24px;
+            color: #ffffff;
+            margin: 20px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-shadow: 0 0 10px #fff;
+        }
+        .marquee span {
+            display: inline-block;
+            animation: scroll 10s linear infinite;
+        }
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        audio {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Looping Bomb-like Fireworks Around Photo -->
+    <div class="fireworks" id="fireworks"></div>
+    
+    <h1>Happy Birthday <br> Khushii❤️!</h1>
+    
+    <!-- Slideshow of Photos -->
+    <div class="slideshow-container" id="slideshow">
+        <img class="slide fade" src="photo 1.jpg" alt="Photo 1">
+        <img class="slide fade" src="photo 2.jpg" alt="Photo 2">
+        <img class="slide fade" src="photo 3.jpg" alt="Photo 3">
+        <img class="slide fade" src="photo 4.jpg" alt="Photo 4">
+        <img class="slide fade" src="photo 5.jpg" alt="Photo 5">
+        <img class="slide fade" src="photo 6.jpg" alt="Photo 6">
+    </div>
+    
+    <!-- Scrolling Text -->
+    <div class="marquee">
+        <span>🎉 Happy Birthday! 🎂 Wishing you a fantastic year ahead! 🎈</span>
+    </div>
+    
+    <!-- Looping Song -->
+    <audio controls autoplay loop>
+        <source src="bday.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <p>Enjoy your special day! <br>From Me</p>
+    
+    <script>
+        // Slideshow Script
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let slides = document.getElementsByClassName("slide");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1; }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 3000); // Change image every 3 seconds
+        }
+
+        // Generate Looping Bomb-like Fireworks Around the Photo
+        const fireworksContainer = document.getElementById('fireworks');
+        const slideshow = document.getElementById('slideshow');
+        const colors = ['#ff4500', '#ffd700', '#ff1493', '#00ff00', '#1e90ff', '#ff6347']; // Explosion colors
+
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            const slideshowRect = slideshow.getBoundingClientRect();
+            const side = Math.floor(Math.random() * 4); // 0: top, 1: right, 2: bottom, 3: left
+
+            if (side === 0) { // Top
+                firework.style.left = slideshowRect.left + Math.random() * slideshowRect.width + 'px';
+                firework.style.top = slideshowRect.top - 10 + 'px';
+            } else if (side === 1) { // Right
+                firework.style.left = slideshowRect.right + 10 + 'px';
+                firework.style.top = slideshowRect.top + Math.random() * slideshowRect.height + 'px';
+            } else if (side === 2) { // Bottom
+                firework.style.left = slideshowRect.left + Math.random() * slideshowRect.width + 'px';
+                firework.style.top = slideshowRect.bottom + 10 + 'px';
+            } else { // Left
+                firework.style.left = slideshowRect.left - 10 + 'px';
+                firework.style.top = slideshowRect.top + Math.random() * slideshowRect.height + 'px';
+            }
+
+            firework.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]}, transparent)`;
+            firework.style.animationDelay = Math.random() * 2 + 's';
+            fireworksContainer.appendChild(firework);
+
+            // Add scattering particles for bigger burst
+            for (let i = 0; i < 10; i++) { // 10 particles per burst
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = firework.style.left;
+                particle.style.top = firework.style.top;
+                particle.style.setProperty('--x', (Math.random() - 0.5) * 2); // Random scatter direction
+                particle.style.setProperty('--y', (Math.random() - 0.5) * 2);
+                particle.style.background = firework.style.background;
+                particle.style.animationDelay = firework.style.animationDelay;
+                fireworksContainer.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 2000);
+            }
+
+            setTimeout(() => firework.remove(), 2000);
+        }
+
+        // Create bursts continuously around the photo
+        setInterval(createFirework, 800); // New burst every 0.8 seconds
+    </script>
+</body>
+</html>
